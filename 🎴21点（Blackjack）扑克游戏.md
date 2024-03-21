@@ -141,7 +141,8 @@ class Player(metaclass = ABCMeta):
         '''
         下注
         '''
-        return self.chip - num
+        self.chip -= num
+        return self.chip
     
     def Scoring(self):
         '''
@@ -270,11 +271,13 @@ class Game(object):
 
     def  Count(self, ord):
         if ord == 1:
-            self.player1.chip = self.player1.chip + self.bet_chip + self.times * self.bet_chip
-            self.player2.chip -= self.times * self.bet_chip
+            self.player1.chip = self.player1.chip + self.times * self.bet_chip
+            self.player2.chip -= (self.times - 1) * self.bet_chip
         elif ord == 2:
             self.player2.chip = self.player2.chip + self.bet_chip + self.times * self.bet_chip
             self.player1.chip -= self.times * self.bet_chip
+        elif ord == 3:
+            self.player2.chip = self.player2.chip + self.bet_chip
     
     def GameStart(self):
 
@@ -294,6 +297,7 @@ class Game(object):
             
             self.bet_chip = int(input('请输入下注筹码数额：'))  ## 下注筹码放在牌局上
             self.player2.Bet(self.bet_chip)
+            print(self.player2.chip) ## test
             
             print()
             print('下注环节结束，接下来每人将会发到两张底牌！')
